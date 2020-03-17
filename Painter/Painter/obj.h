@@ -37,6 +37,7 @@ struct Point {
 class Line {
 public:
 	double A, B, C;//Ax+By+C=0;
+	int x1, y1, x2, y2;
 	Line(double x1, double y1, double x2, double y2);
 	string display();
 	vector<Point> getIntersectPoint(Line& line);
