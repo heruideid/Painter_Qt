@@ -23,11 +23,17 @@ struct Point {
 	Point(double x, double y);
 	bool operator<(const Point& other)const
 	{
-		if (x == other.x) {
-			//if (EQUAL(y,other.y)) return false;
+		if (EQUAL(x,other.x)) {
+			if (EQUAL(y,other.y)) return false;
 			return y < other.y;
 		}
 		return x < other.x;
+	}
+
+	bool operator==(const Point& other)const
+	{
+		if (EQUAL(x, other.x) && EQUAL(y, other.y)) return true;
+		return false;
 	}
 };
 

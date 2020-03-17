@@ -87,9 +87,16 @@ int main(int argv, char** args)
 	LoadFromFile(input, lines, rays, segments, circles);
 
 	Calculate_Points(points, lines, rays, segments, circles);
+	
+	cout << points.size()<<endl;
+	for (auto& point : points)	cout << point.x << " " << point.y << endl;
 
-	//cout << points.size()<<endl;
-	//for (auto& point : points)	cout << point.x << " " << point.y << endl;
+	/*
+	for (auto& line : lines) cout<<line.display()<<endl;
+	for (auto& ray : rays) cout << ray.display() << endl;
+	for (auto& line : segments) cout << line.display() << endl;
+	for (auto& line : circles) cout << line.display() << endl;*/
+
 	output << points.size();
 	input.close();
 	output.close();

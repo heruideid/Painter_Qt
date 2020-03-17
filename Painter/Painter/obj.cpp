@@ -214,7 +214,7 @@ vector<Point> Line::getIntersectPoint(Line& line) {
 	double x = 0, y = 0;
 	const double A2 = line.A, B2 = line.B, C2 = line.C;
 	const double m = A * B2 - A2 * B;
-	if (m == 0) return_points();
+	if (m == 0) return return_points();
 	x = (C2*B - C * B2)*1.0 / m;
 	y = (C*A2 - C2 * A)*1.0 / m;
 	return return_points(x, y);
