@@ -70,7 +70,7 @@ string Segment::display() {
 }
 
 string Circle::display() {
-	string str = "C " + to_string(cx) + " " + to_string(cy) + " " + to_string(cr);
+	string str = "C " + to_string(int(cx)) + " " + to_string(int(cy)) + " " + to_string(int(cr));
 	return str;
 }
 

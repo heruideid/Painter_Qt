@@ -75,21 +75,20 @@ int main(int argv, char** args)
 	vector<Ray> rays;
 	vector<Circle> circles;
 
-	/*
+	
 	if (argv == 5 && strcmp(args[1], "-i") == 0 && strcmp(args[3], "-o") == 0) {
 		input = ifstream(args[2]);
 		output = ofstream(args[4]);
-		input >> n;
-	}*/
+	}
 
-	input.open("input.txt");
-	output.open("output.txt");
+	/*input.open("input.txt");
+	output.open("output.txt");*/
 	LoadFromFile(input, lines, rays, segments, circles);
 
 	Calculate_Points(points, lines, rays, segments, circles);
 	
-	cout << points.size()<<endl;
-	for (auto& point : points)	cout << point.x << " " << point.y << endl;
+	/*cout << points.size()<<endl;
+	for (auto& point : points)	cout << point.x << " " << point.y << endl;*/
 
 	/*
 	for (auto& line : lines) cout<<line.display()<<endl;

@@ -14,7 +14,7 @@ namespace UnitTest
 		TEST_METHOD(TestMethod1)//getIntersectPoint
 		{
 			Line *line_1, *line_2;
-			Circle *cir_1, *cir_2;
+			Circle *cir_2;
 			vector<Point> points;
 
 			//case 1:line & line œ‡Ωª
@@ -158,6 +158,30 @@ namespace UnitTest
 			lines.clear(); cirs.clear();
 			rays.clear(); segs.clear();
 		}
+		TEST_METHOD(Test_Method4) //LoadFromFile
+		{
+			ifstream fin;
+			fin.open("test_file_in.txt");
+			vector<Line> lines;
+			vector<Ray> rays;
+			vector<Segment> segs;
+			vector<Circle> cirs;
+			
+			/*4
+				C 3 3 3
+				S 2 4 3 2
+				L - 1 4 5 2
+				R 2 5 - 1 2*/
+			LoadFromFile(fin,lines,rays,segs,cirs);
 
+			Assert::AreEqual((int)lines.size(),1);
+			Assert::AreEqual((int)rays.size(),1);
+			Assert::AreEqual((int)segs.size(),1);
+			Assert::AreEqual((int)cirs.size(),1);
+			Assert::AreEqual(lines[0].display(),string("L -1 4 5 2"));
+			Assert::AreEqual(rays[0].display(),string("R 2 5 -1 2"));
+			Assert::AreEqual(segs[0].display(),string("S 2 4 3 2"));
+			Assert::AreEqual(cirs[0].display(),string("C 3 3 3"));
+		}
 	};
 }
