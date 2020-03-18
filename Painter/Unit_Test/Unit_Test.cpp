@@ -11,6 +11,7 @@ namespace UnitTest
 	TEST_CLASS(UnitTest)
 	{
 	public:
+		//ĞÂÔöº¯Êı²âÊÔ
 		TEST_METHOD(TestMethod1)//getIntersectPoint
 		{
 			Line *line_1, *line_2;
