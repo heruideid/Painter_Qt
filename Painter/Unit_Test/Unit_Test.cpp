@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include"../Painter/obj.h"
 #include "../Painter/obj.cpp"
-#include "../Painter/Painter.cpp"
+#include "../Painter/core.cpp"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
@@ -66,6 +66,31 @@ namespace UnitTest
 			
 		}
 		//接口测试
+		TEST_METHOD(TestMethod3) //LoadFromFile
+		{
+			ifstream fin;
+			fin.open("test_file_in.txt");
+			vector<Line> lines;
+			vector<Ray> rays;
+			vector<Segment> segs;
+			vector<Circle> cirs;
+
+			/*4
+				C 3 3 3
+				S 2 4 3 2
+				L - 1 4 5 2
+				R 2 5 - 1 2*/
+			LoadFromFile(fin, lines, rays, segs, cirs);
+
+			Assert::AreEqual((int)lines.size(), 1);
+			Assert::AreEqual((int)rays.size(), 1);
+			Assert::AreEqual((int)segs.size(), 1);
+			Assert::AreEqual((int)cirs.size(), 1);
+			Assert::AreEqual(lines[0].display(), string("L -1 4 5 2"));
+			Assert::AreEqual(rays[0].display(), string("R 2 5 -1 2"));
+			Assert::AreEqual(segs[0].display(), string("S 2 4 3 2"));
+			Assert::AreEqual(cirs[0].display(), string("C 3 3 3"));
+		}
 		TEST_METHOD(TestMethod4)//Calculate_Points
 		{
 			//case 1:
@@ -158,6 +183,138 @@ namespace UnitTest
 			lines.clear(); cirs.clear();
 			rays.clear(); segs.clear();
 		}
-
+		//异常测试
+		TEST_METHOD(excep1) //exception
+		{
+			//line & line 重合
+			Line* l1 = new Line(0, 0, 1, 1);
+			Line* l2 = new Line(-1,-1,1,1);
+			bool flag = false; //捕捉到异常
+			try {
+				exception_if_InfPoints(*l1,*l2);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "有无穷交点!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep2) {
+			//ray & ray 区间重合
+			bool flag = false;
+			Ray* r1 = new Ray(0, 0, 1, 1);
+			Ray* r2 = new Ray(-1, -1, 5,5);
+			try {
+				exception_if_InfPoints(*r1, *r2);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "有无穷交点!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep3) {
+			//ray & ray 仅有端点重合，但方向相反
+			bool flag = true;
+			Ray* r1 = new Ray(0, 0, 1, 1);
+			Ray* r2 = new Ray(0, 0, -1, -1);
+			try {
+				exception_if_InfPoints(*r1, *r2);
+			}
+			catch (exception& e) {
+				 flag = false;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep4) {
+			//ray & seg 区间重合
+			bool flag = false;
+			Ray* r1 = new Ray(0, 0, 1, 1);
+			Segment* s2=new Segment(-1,-1,1,1);
+			try {
+				exception_if_InfPoints(*r1, *s2);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "有无穷交点!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep5) {
+			//ray & seg 仅有一个端点重合
+			bool flag = true;
+			Ray* r1 = new Ray(0, 0, 1, 1);
+			Segment* s2 = new Segment(-1, -1, 0, 0);
+			try {
+				exception_if_InfPoints(*r1, *s2);
+			}
+			catch (exception& e) {
+				 flag = false;
+			}
+			Assert::AreEqual(true,flag);
+		}
+		TEST_METHOD(excep6) {
+			//seg & seg 区间重合
+			bool flag = false;
+			Ray* r1 = new Ray(0, 0, 2, 2);
+			Segment* s2 = new Segment(-1, -1, 1, 1);
+			try {
+				exception_if_InfPoints(*r1, *s2);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "有无穷交点!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep7) {
+			//seg & seg 仅有一个端点重合
+			bool flag = true;
+			Ray* r1 = new Ray(0, 0, 2, 2);
+			Segment* s2 = new Segment(-1, -1, 0, 0);
+			try {
+				exception_if_InfPoints(*r1, *s2);
+			}
+			catch (exception& e) {
+				flag = false;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep8) {
+			//定义线的两个端点相同
+			ifstream fin;
+			fin.open("excep8.txt");
+			vector<Line> lines;
+			vector<Ray> rays;
+			vector<Segment> segs;
+			vector<Circle> cirs;
+			bool flag = false;
+			/*2
+				L -1 4 -1 4
+				R 2 5 - 1 2*/
+			try {
+				LoadFromFile(fin, lines, rays, segs, cirs);
+			}
+			catch(exception& e){
+				if ((string)e.what() == "定义线的两点不能相同!") flag = true;
+			}
+			Assert::AreEqual(true,flag);
+		}
+		TEST_METHOD(excep9) {
+			//数值超限
+			ifstream fin;
+			fin.open("excep9.txt");
+			vector<Line> lines;
+			vector<Ray> rays;
+			vector<Segment> segs;
+			vector<Circle> cirs;
+			bool flag = false;
+			/* 1
+				L - 100001 4 -1 4
+			*/
+			try {
+				LoadFromFile(fin, lines, rays, segs, cirs);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "点的数值超限,应为(-100000,100000)内整数!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
 	};
 }

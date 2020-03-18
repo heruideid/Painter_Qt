@@ -19,22 +19,63 @@ inline vector<Point> return_points(double x, double y, double x2, double y2) {
 	return new_points;
 }
 
+inline void exception_if_InfPoints(Line& line_1, Line& line_2){
+	if (line_1.typecode == 'L' || line_2.typecode == 'L') throw exception("有无穷交点!");
+	if (line_1.typecode == 'R') {
+		if (line_2.typecode == 'R') {
+			Point p1(line_1.x1, line_1.y1);//射线1的端点
+			Point p2(line_2.x1, line_2.y1);//射线2的端点
+			if (!(p1 == p2) && (line_1.islawful(p2) || line_2.islawful(p1))) throw exception("有无穷交点!"); //两射线端点不重合
+			if (p1 == p2) { //两射线端点重合
+				Point p3(line_1.x2, line_1.y2);
+				if (line_2.islawful(p3)) throw exception("有无穷交点!");
+			}
+		}
+		else if (line_2.typecode == 'S') {
+			Point ray_point(line_1.x1, line_1.y1); //射线端点
+			Point p1(line_2.x1, line_2.y1); //线段端点1
+			Point p2(line_2.x2, line_2.y2); //线段端点2
+			if (!(p1 == ray_point) && line_1.islawful(p1)) throw exception("有无穷交点!");
+			if (!(p2 == ray_point) && line_1.islawful(p2))	throw exception("有无穷交点!");
+		}
+	}
+	if (line_1.typecode == 'S') {
+		if (line_2.typecode == 'R') {
+			Point ray_point(line_2.x1, line_2.y1); //射线端点
+			Point p1(line_1.x1, line_1.y1); //线段端点1
+			Point p2(line_1.x2, line_1.y2); //线段端点2
+			if (!(p1 == ray_point) && line_2.islawful(p1)) throw exception("有无穷交点!");
+			if (!(p2 == ray_point) && line_2.islawful(p2))	throw exception("有无穷交点!");
+		}
+		else if (line_2.typecode == 'S') {
+			Point p1(line_1.x1, line_1.y1); //线段1 端点
+			Point p2(line_1.x2, line_1.y2); //线段1 端点
 
+			Point p3(line_2.x1, line_2.y1); //线段2 端点
+			Point p4(line_2.x2, line_2.y2); //线段2 端点
+
+			if (line_2.islawful(p1) && !(p1 == p3) && !(p1 == p4))	 throw exception("有无穷交点!");
+			if (line_2.islawful(p2) && !(p2 == p3) && !(p2 == p4))	 throw exception("有无穷交点!");
+			if (p1 == p3 && p2 == p4) throw exception("有无穷交点!");
+			if (p1 == p4 && p2 == p3) throw exception("有无穷交点!");
+		}
+	}
+}
 
 //构造函数
 Point::Point(double x, double y) :x(x), y(y) {}
 
-Line::Line(double x1, double y1, double x2, double y2) : A(y2 - y1), B(x1 - x2), C(x2 * y1 - x1 * y2), x1(x1), y1(y1), x2(x2), y2(y2) {}
+Line::Line(double x1, double y1, double x2, double y2) : A(y2 - y1), B(x1 - x2), C(x2 * y1 - x1 * y2), x1(x1), y1(y1), x2(x2), y2(y2),typecode('L') {}
 
 Ray::Ray(double x1, double y1, double x2, double y2) : Line(x1, y1, x2, y2) {
 	start_x = x1;
 	start_y = y1;
 	end_x = x2;
 	end_y = y2;
+	typecode = 'R';
 }
 
 Segment::Segment(double x1, double y1, double x2, double y2) :Line(x1, y1, x2, y2) {
-	if (x1 == x2 && y1 == y2) throw exception("Two Same points!");
 	if (x1 < x2 || (x1 == x2 && y1 < y2)) {
 		start_x = x1;
 		start_y = y1;
@@ -47,11 +88,10 @@ Segment::Segment(double x1, double y1, double x2, double y2) :Line(x1, y1, x2, y
 		end_x = x1;
 		end_y = y1;
 	}
-
+	typecode = 'S';
 }
 
-Circle::Circle(double x, double y, double r) :cx(x), cy(y), cr(r) {}
-
+Circle::Circle(double x, double y, double r) :cx(x), cy(y), cr(r),typecode('C') {}
 
 string Line::display() {
 
@@ -70,7 +110,7 @@ string Segment::display() {
 }
 
 string Circle::display() {
-	string str = "C " + to_string(cx) + " " + to_string(cy) + " " + to_string(cr);
+	string str = "C " + to_string(int(cx)) + " " + to_string(int(cy)) + " " + to_string(int(cr));
 	return str;
 }
 
@@ -208,13 +248,20 @@ void Circle::upgrade_points(set<Point>& points, Circle& circle) {
 	}
 }
 
-
-
 vector<Point> Line::getIntersectPoint(Line& line) {
 	double x = 0, y = 0;
 	const double A2 = line.A, B2 = line.B, C2 = line.C;
 	const double m = A * B2 - A2 * B;
-	if (m == 0) return return_points();
+	if (m == 0) {
+		if (B != 0) {
+			if (B*C2 == C * B2) { exception_if_InfPoints(*this, line); }////直线重合报异常
+			return return_points();
+		}
+		else { //A!=0
+			if (A*C2 == C * A2) { exception_if_InfPoints(*this, line); }//直线重合就报异常
+			return return_points();
+		}
+	}
 	x = (C2*B - C * B2)*1.0 / m;
 	y = (C*A2 - C2 * A)*1.0 / m;
 	return return_points(x, y);

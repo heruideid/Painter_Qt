@@ -13,6 +13,7 @@ constexpr auto eps = (1e-4);
 #define EQUAL(x,y) fabs((x)-(y))<=eps
 
 
+
 class Circle;
 class Line;
 class Ray;
@@ -44,6 +45,7 @@ class Line {
 public:
 	double A, B, C;//Ax+By+C=0;
 	int x1, y1, x2, y2;
+	char typecode;
 	Line(double x1, double y1, double x2, double y2);
 	string display();
 	vector<Point> getIntersectPoint(Line& line);
@@ -78,10 +80,10 @@ public:
 class Circle {
 public:
 	double cx, cy, cr;
+	char typecode;
 	Circle(double x, double y, double r);
 	string display();
 	void upgrade_points(set<Point>& points, Circle& circle);
 };
-
 
 
