@@ -4,11 +4,11 @@
 
 ## 二、扩展计算交点功能（by 何瑞）
 
-### 项目要求（Undo）
+### 项目要求（done）
 
 - 对新增功能涉及到的函数进行单元测试。（done）
 - 回归测试所有以前的功能，保证以前的功能还能继续工作。(done)
-- 在完成这一阶段的任务之后，使用 `git tag step1` 标记，并在 push 到Github 上时使用 `--tags` 参数把 tag 也推送到 Github，例如`git push origin --tags`。(undo)
+- 在完成这一阶段的任务之后，使用 `git tag step1` 标记，并在 push 到Github 上时使用 `--tags` 参数把 tag 也推送到 Github，例如`git push origin --tags`。(done)
 
 ### 博客要求
 
@@ -20,19 +20,17 @@
 
 
 
-
-
 ## 三、将扩展后的功能封装为独立模块(by 何瑞)
 
-### 项目要求（undo）
+### 项目要求（done）
 
 - 以需要支持接入 GUI 模块为前提，自行设计求解几何对象交点的接口集合。
 
-- 对设计的接口进行测试。(Undo)
+- 对设计的接口进行测试。(done)
 
 - 保持命令行程序在封装完成后仍然可用。(Done)
 
-- 在完成这一阶段的任务之后，使用 `git tag step2` 标记，并在 push 到 Github 上时使用 `--tags` 参数把 tag 也推送到 Github。
+- 在完成这一阶段的任务之后，使用 `git tag step2` 标记，并在 push 到 Github 上时使用 `--tags` 参数把 tag 也推送到 Github。(done)
 
   
 
