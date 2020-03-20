@@ -118,7 +118,6 @@ namespace UnitTest
 			rays.clear(); segs.clear();
 			points.clear();
 
-
 			// case 2:
 				/*	4
 					C 3 3 3
@@ -185,6 +184,19 @@ namespace UnitTest
 			rays.clear(); segs.clear();
 		}
 		//异常测试
+		TEST_METHOD(excep0) {
+			//cir & cir
+			Circle* c1 = new Circle(0, 0, 1);
+			Circle* c2 = new Circle(0, 0, 1);
+			bool flag = false; //捕捉到异常
+			try {
+				exception_if_InfPoints(*c1, *c2);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "有无穷交点!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
 		TEST_METHOD(excep1) //exception
 		{
 			//line & line 重合
@@ -314,6 +326,66 @@ namespace UnitTest
 			}
 			catch (exception& e) {
 				if ((string)e.what() == "点的数值超限,应为(-100000,100000)内整数!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep10) {
+			//illegal n
+			ifstream fin;
+			fin.open("excep10.txt");
+			vector<Line> lines;
+			vector<Ray> rays;
+			vector<Segment> segs;
+			vector<Circle> cirs;
+			bool flag = false;
+			/*  0
+				L - 100 4 -1 4
+			*/
+			try {
+				LoadFromFile(fin, lines, rays, segs, cirs);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "illegal n!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep11) {
+			//圆半径<=0
+			ifstream fin;
+			fin.open("excep11.txt");
+			vector<Line> lines;
+			vector<Ray> rays;
+			vector<Segment> segs;
+			vector<Circle> cirs;
+			bool flag = false;
+			/*  1
+				C - 100 4 0
+			*/
+			try {
+				LoadFromFile(fin, lines, rays, segs, cirs);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "圆的半径<=0,非法!") flag = true;
+			}
+			Assert::AreEqual(true, flag);
+		}
+		TEST_METHOD(excep12) {
+			//类别码非法
+			ifstream fin;
+			fin.open("excep12.txt");
+			vector<Line> lines;
+			vector<Ray> rays;
+			vector<Segment> segs;
+			vector<Circle> cirs;
+			bool flag = false;
+			/*  1
+				c - 100 4 1
+			*/
+			try {
+				LoadFromFile(fin, lines, rays, segs, cirs);
+			}
+			catch (exception& e) {
+				if ((string)e.what() == "typecode should be upppercase!") flag = true;
 			}
 			Assert::AreEqual(true, flag);
 		}

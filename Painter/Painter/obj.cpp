@@ -62,6 +62,10 @@ inline void exception_if_InfPoints(Line& line_1, Line& line_2){
 	}
 }
 
+inline void exception_if_InfPoints(Circle& cir_1,Circle& cir_2) {
+	if (cir_1.cr == cir_2.cr&&cir_1.cx == cir_2.cx&&cir_1.cy == cir_2.cy) throw exception("有无穷交点!");
+}
+
 //构造函数
 Point::Point(double x, double y) :x(x), y(y) {}
 
@@ -205,6 +209,7 @@ void Segment::upgrade_points(set<Point>& points, Circle& circle) {
 }
 
 void Circle::upgrade_points(set<Point>& points, Circle& circle) {
+	exception_if_InfPoints(*this,circle);
 	const double cx1 = circle.cx, cy1 = circle.cy, cr1 = circle.cr;
 	const double dis = sqrt((cx - cx1)*(cx - cx1) + (cy - cy1)*(cy - cy1));
 	if (dis < cr - cr1 || dis<cr1 - cr || dis>cr + cr1) return;
