@@ -2,18 +2,6 @@
 using namespace std;
 #define DEBUG
 
-inline void exception_if_samePoints(int x1,int y1,int x2,int y2) {
-	if (x1 == x2 && y1 == y2) throw exception("定义线的两点不能相同!");
-}
-
-inline void exception_if_outBorder(int value) {
-	if (value <= -100000 || value >= 100000) throw exception("点的数值超限,应为(-100000,100000)内整数!");
-}
-
-inline void exception_if_illegalRadius(int r) {
-	if (r <= 0) throw exception("圆的半径<=0,非法!");
-}
-
 void LoadFromFile(ifstream& input, vector<Line>& lines, vector<Ray>& rays,
 	vector<Segment>& segments, vector<Circle>& circles) {
 	int n;
@@ -116,7 +104,7 @@ int main(int argv, char** args)
 		output = ofstream(args[4]);
 	}
 	else {
-		cout << "请按指定格式调用!\n";
+		cout << "format of call is wrong\n";
 		exit(0);
 	}
 #endif

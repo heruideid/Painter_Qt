@@ -38,13 +38,21 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <QtRcc Include="MyWiget.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Gui.rc" />
+  </ItemGroup>
+  <ItemGroup>
     <QtUic Include="MyWiget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="MyWiget.qrc">
+    <Library Include="core.lib">
       <Filter>Resource Files</Filter>
-    </QtRcc>
+    </Library>
   </ItemGroup>
 </Project>

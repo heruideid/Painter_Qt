@@ -19,53 +19,6 @@ inline vector<Point> return_points(double x, double y, double x2, double y2) {
 	return new_points;
 }
 
-inline void exception_if_InfPoints(Line& line_1, Line& line_2){
-	if (line_1.typecode == 'L' || line_2.typecode == 'L') throw exception("有无穷交点!");
-	if (line_1.typecode == 'R') {
-		if (line_2.typecode == 'R') {
-			Point p1(line_1.x1, line_1.y1);//射线1的端点
-			Point p2(line_2.x1, line_2.y1);//射线2的端点
-			if (!(p1 == p2) && (line_1.islawful(p2) || line_2.islawful(p1))) throw exception("有无穷交点!"); //两射线端点不重合
-			if (p1 == p2) { //两射线端点重合
-				Point p3(line_1.x2, line_1.y2);
-				if (line_2.islawful(p3)) throw exception("有无穷交点!");
-			}
-		}
-		else if (line_2.typecode == 'S') {
-			Point ray_point(line_1.x1, line_1.y1); //射线端点
-			Point p1(line_2.x1, line_2.y1); //线段端点1
-			Point p2(line_2.x2, line_2.y2); //线段端点2
-			if (!(p1 == ray_point) && line_1.islawful(p1)) throw exception("有无穷交点!");
-			if (!(p2 == ray_point) && line_1.islawful(p2))	throw exception("有无穷交点!");
-		}
-	}
-	if (line_1.typecode == 'S') {
-		if (line_2.typecode == 'R') {
-			Point ray_point(line_2.x1, line_2.y1); //射线端点
-			Point p1(line_1.x1, line_1.y1); //线段端点1
-			Point p2(line_1.x2, line_1.y2); //线段端点2
-			if (!(p1 == ray_point) && line_2.islawful(p1)) throw exception("有无穷交点!");
-			if (!(p2 == ray_point) && line_2.islawful(p2))	throw exception("有无穷交点!");
-		}
-		else if (line_2.typecode == 'S') {
-			Point p1(line_1.x1, line_1.y1); //线段1 端点
-			Point p2(line_1.x2, line_1.y2); //线段1 端点
-
-			Point p3(line_2.x1, line_2.y1); //线段2 端点
-			Point p4(line_2.x2, line_2.y2); //线段2 端点
-
-			if (line_2.islawful(p1) && !(p1 == p3) && !(p1 == p4))	 throw exception("有无穷交点!");
-			if (line_2.islawful(p2) && !(p2 == p3) && !(p2 == p4))	 throw exception("有无穷交点!");
-			if (p1 == p3 && p2 == p4) throw exception("有无穷交点!");
-			if (p1 == p4 && p2 == p3) throw exception("有无穷交点!");
-		}
-	}
-}
-
-inline void exception_if_InfPoints(Circle& cir_1,Circle& cir_2) {
-	if (cir_1.cr == cir_2.cr&&cir_1.cx == cir_2.cx&&cir_1.cy == cir_2.cy) throw exception("有无穷交点!");
-}
-
 //构造函数
 Point::Point(double x, double y) :x(x), y(y) {}
 
@@ -322,3 +275,4 @@ vector<Point> Line::getIntersectPoint(Circle& circle) {
 		return return_points();
 	}
 }
+

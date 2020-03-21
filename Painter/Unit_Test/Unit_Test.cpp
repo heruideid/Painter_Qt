@@ -193,7 +193,7 @@ namespace UnitTest
 				exception_if_InfPoints(*c1, *c2);
 			}
 			catch (exception& e) {
-				if ((string)e.what() == "有无穷交点!") flag = true;
+				if ((string)e.what() == "Has infinite points") flag = true;
 			}
 			Assert::AreEqual(true, flag);
 		}
@@ -207,7 +207,7 @@ namespace UnitTest
 				exception_if_InfPoints(*l1,*l2);
 			}
 			catch (exception& e) {
-				if ((string)e.what() == "有无穷交点!") flag = true;
+				if ((string)e.what() == "Has infinite points") flag = true;
 			}
 			Assert::AreEqual(true, flag);
 		}
@@ -220,7 +220,7 @@ namespace UnitTest
 				exception_if_InfPoints(*r1, *r2);
 			}
 			catch (exception& e) {
-				if ((string)e.what() == "有无穷交点!") flag = true;
+				if ((string)e.what() == "Has infinite points") flag = true;
 			}
 			Assert::AreEqual(true, flag);
 		}
@@ -246,7 +246,7 @@ namespace UnitTest
 				exception_if_InfPoints(*r1, *s2);
 			}
 			catch (exception& e) {
-				if ((string)e.what() == "有无穷交点!") flag = true;
+				if ((string)e.what() == "Has infinite points") flag = true;
 			}
 			Assert::AreEqual(true, flag);
 		}
@@ -272,7 +272,7 @@ namespace UnitTest
 				exception_if_InfPoints(*r1, *s2);
 			}
 			catch (exception& e) {
-				if ((string)e.what() == "有无穷交点!") flag = true;
+				if ((string)e.what() == "Has infinite points") flag = true;
 			}
 			Assert::AreEqual(true, flag);
 		}
@@ -305,7 +305,7 @@ namespace UnitTest
 				LoadFromFile(fin, lines, rays, segs, cirs);
 			}
 			catch(exception& e){
-				if ((string)e.what() == "定义线的两点不能相同!") flag = true;
+				if ((string)e.what() == "Use same points to define line/ray/segment") flag = true;
 			}
 			Assert::AreEqual(true,flag);
 		}
@@ -325,7 +325,7 @@ namespace UnitTest
 				LoadFromFile(fin, lines, rays, segs, cirs);
 			}
 			catch (exception& e) {
-				if ((string)e.what() == "点的数值超限,应为(-100000,100000)内整数!") flag = true;
+				if ((string)e.what() == "value of point out of range(-100000,100000)") flag = true;
 			}
 			Assert::AreEqual(true, flag);
 		}
@@ -365,7 +365,7 @@ namespace UnitTest
 				LoadFromFile(fin, lines, rays, segs, cirs);
 			}
 			catch (exception& e) {
-				if ((string)e.what() == "圆的半径<=0,非法!") flag = true;
+				if ((string)e.what() == "radius of circle <=0") flag = true;
 			}
 			Assert::AreEqual(true, flag);
 		}

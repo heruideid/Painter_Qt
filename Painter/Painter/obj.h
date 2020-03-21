@@ -87,3 +87,74 @@ public:
 };
 
 
+#ifdef CORE
+#define DLL_API __declspec(dllexport)
+#else
+#define DLL_API __declspec(dllimport)
+#endif
+
+DLL_API void LoadFromFile(ifstream& input, vector<Line>& lines, vector<Ray>& rays,
+	vector<Segment>& segments, vector<Circle>& circles);
+
+DLL_API void Calculate_Points(set<Point>& points, vector<Line>& lines, vector<Ray>& rays,
+	vector<Segment>& segments, vector<Circle>& circles);
+
+//异常定义
+inline void exception_if_InfPoints(Line& line_1, Line& line_2) {
+	if (line_1.typecode == 'L' || line_2.typecode == 'L') throw exception("Has infinite points");
+	if (line_1.typecode == 'R') {
+		if (line_2.typecode == 'R') {
+			Point p1(line_1.x1, line_1.y1);//射线1的端点
+			Point p2(line_2.x1, line_2.y1);//射线2的端点
+			if (!(p1 == p2) && (line_1.islawful(p2) || line_2.islawful(p1))) throw exception("Has infinite points"); //两射线端点不重合
+			if (p1 == p2) { //两射线端点重合
+				Point p3(line_1.x2, line_1.y2);
+				if (line_2.islawful(p3)) throw exception("Has infinite points");
+			}
+		}
+		else if (line_2.typecode == 'S') {
+			Point ray_point(line_1.x1, line_1.y1); //射线端点
+			Point p1(line_2.x1, line_2.y1); //线段端点1
+			Point p2(line_2.x2, line_2.y2); //线段端点2
+			if (!(p1 == ray_point) && line_1.islawful(p1)) throw exception("Has infinite points");
+			if (!(p2 == ray_point) && line_1.islawful(p2))	throw exception("Has infinite points");
+		}
+	}
+	if (line_1.typecode == 'S') {
+		if (line_2.typecode == 'R') {
+			Point ray_point(line_2.x1, line_2.y1); //射线端点
+			Point p1(line_1.x1, line_1.y1); //线段端点1
+			Point p2(line_1.x2, line_1.y2); //线段端点2
+			if (!(p1 == ray_point) && line_2.islawful(p1)) throw exception("Has infinite points");
+			if (!(p2 == ray_point) && line_2.islawful(p2))	throw exception("Has infinite points");
+		}
+		else if (line_2.typecode == 'S') {
+			Point p1(line_1.x1, line_1.y1); //线段1 端点
+			Point p2(line_1.x2, line_1.y2); //线段1 端点
+
+			Point p3(line_2.x1, line_2.y1); //线段2 端点
+			Point p4(line_2.x2, line_2.y2); //线段2 端点
+
+			if (line_2.islawful(p1) && !(p1 == p3) && !(p1 == p4))	 throw exception("Has infinite points");
+			if (line_2.islawful(p2) && !(p2 == p3) && !(p2 == p4))	 throw exception("Has infinite points");
+			if (p1 == p3 && p2 == p4) throw exception("Has infinite points");
+			if (p1 == p4 && p2 == p3) throw exception("Has infinite points");
+		}
+	}
+}
+
+inline void exception_if_InfPoints(Circle& cir_1, Circle& cir_2) {
+	if (cir_1.cr == cir_2.cr&&cir_1.cx == cir_2.cx&&cir_1.cy == cir_2.cy) throw exception("Has infinite points");
+}
+
+inline void exception_if_samePoints(int x1, int y1, int x2, int y2) {
+	if (x1 == x2 && y1 == y2) throw exception("Use same points to define line/ray/segment");
+}
+
+inline void exception_if_outBorder(int value) {
+	if (value <= -100000 || value >= 100000) throw exception("value of point out of range(-100000,100000)");
+}
+
+inline void exception_if_illegalRadius(int r) {
+	if (r <= 0) throw exception("radius of circle <=0");
+}

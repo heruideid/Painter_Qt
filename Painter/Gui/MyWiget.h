@@ -8,7 +8,7 @@ class MyWiget : public QWidget
 {
 	Q_OBJECT
 public:
-
+	int canvas_y = 280;
 	set<QString> obj;
 	vector<Line> lines;
 	vector<Circle> circles;
